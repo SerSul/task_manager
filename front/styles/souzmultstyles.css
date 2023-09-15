@@ -31,7 +31,7 @@
 
 .souz_logo
 {
-    margin-top:50px;
+
     border-bottom-style: none;
     border-left-style: none;
     border-right-style: none;
@@ -43,7 +43,7 @@
     overflow-clip-margin: content-box;
     overflow-x: clip;
     text-size-adjust: 100%;
-    width: 150px;
+    width: 200px;
     border-radius: 90%;
     -webkit-font-smoothing: antialiased;
 
