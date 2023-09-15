@@ -14,28 +14,28 @@
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
-    // Обработчик отправки формы
+
     document.getElementById('loginForm').addEventListener('submit', function(event) {
         event.preventDefault();
 
-        // Получение данных из формы
+
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
 
-        // Создание объекта для отправки на сервер
+
         const data = {
             username: username,
             password: password
         };
 
-        // Отправка POST-запроса на сервер
+
         axios.post('http://localhost:8080/login', data)
             .then(function(response) {
-                // Обработка успешного ответа от сервера
+
                 console.log('Успешный ответ:', response.data);
             })
             .catch(function(error) {
-                // Обработка ошибки
+
                 console.error('Ошибка:', error);
             });
     });

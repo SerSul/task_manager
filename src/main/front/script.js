@@ -10,8 +10,8 @@ document.addEventListener("DOMContentLoaded", function() {
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 const response = xhr.responseText;
-                console.log("Ответ:", response); // Вывод ответа в консоль
-                responseDiv.textContent = "Ответ: " + response; // Отображение ответа на странице
+                console.log("Ответ:", response);
+                responseDiv.textContent = "Ответ: " + response;
             }
         };
 

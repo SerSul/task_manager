@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const username = document.getElementById("username").value;
         const password = document.getElementById("password").value;
 
-        // Создаем объект JSON с логином и паролем
         const data = {
             username: username,
             password: password
@@ -17,9 +16,9 @@ document.addEventListener("DOMContentLoaded", function () {
         // Опции для запроса
         const options = {
             method: "POST",
-            body: JSON.stringify(data), // Преобразуем объект в JSON-строку
+            body: JSON.stringify(data),
             headers: {
-                "Content-Type": "application/json" // Указываем, что отправляем JSON
+                "Content-Type": "application/json"
             }
         };
 
@@ -27,11 +26,10 @@ document.addEventListener("DOMContentLoaded", function () {
         fetch("http://localhost:8080/login", options)
             .then((response) => {
                 if (response.ok) {
-                    // Если запрос успешен (HTTP-статус 200), перенаправляем пользователя
-                    // на страницу успешной аутентификации или другую страницу по вашему выбору
+
                     window.location.href = "/dashboard";
                 } else {
-                    // Если запрос вернул ошибку, отобразим сообщение об ошибке
+
                     resultDiv.innerHTML = "Ошибка аутентификации. Попробуйте еще раз.";
                 }
             })
