@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+</head>
+<body>
+<h1>Регистрация</h1>
+<form id="registrationForm">
+    <label for="username">Имя пользователя:</label>
+    <input type="text" id="username" name="username" required>
+    <br>
+    <label for="password">Пароль:</label>
+    <input type="password" id="password" name="password" required>
+    <br>
+    <input type="submit" value="Зарегистрироваться">
+</form>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    // Обработчик отправки формы регистрации
+    document.getElementById('registrationForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        // Получение данных из формы
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        // Создание объекта для отправки на сервер
+        const data = {
+            username: username,
+            password: password
+        };
+
+        // Отправка POST-запроса на сервер
+        axios.post('http://localhost:8080/registration', data)
+            .then(function(response) {
+                // Обработка успешного ответа от сервера
+                console.log('Регистрация успешна:', response.data);
+                // Здесь вы можете выполнить переадресацию на страницу входа или выполнить другие действия
+            })
+            .catch(function(error) {
+                // Обработка ошибки
+                console.error('Ошибка при регистрации:', error);
+            });
+    });
+</script>
+</body>
+</html>
