@@ -28,7 +28,7 @@ public class AuthenticationService {
             userDetails = userDetailsService.loadUserByUsername(username);
 
         } catch (UsernameNotFoundException e) {
-            // Обработка случая, когда пользователь не найден
+
             throw new RuntimeException("User not found");
         }
 

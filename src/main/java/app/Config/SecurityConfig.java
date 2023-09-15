@@ -1,4 +1,4 @@
-package app;
+package app.Config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -7,7 +7,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Component
-public class SecurityConfig {
+public class SecurityConfig  {
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
