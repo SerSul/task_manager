@@ -1,0 +1,51 @@
+
+.top_menu
+{
+    display: flex;
+    font-family: var(--main-font);
+    font-size: 16px;
+
+    justify-content: space-between;
+    line-height: normal;
+    margin: 50px 600px 40px 25px;
+    padding: 20px 20px;
+
+    -webkit-font-smoothing: antialiased;
+
+
+
+
+}
+.souz_text-1
+{
+    margin-right: 25px;
+    display: block;
+    font-family: var(--main-font);
+    font-size: 16px;
+    line-height: normal;
+
+    text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+
+}
+
+.souz_logo
+{
+    margin-top:50px;
+    border-bottom-style: none;
+    border-left-style: none;
+    border-right-style: none;
+    border-top-style: none;
+    display: block;
+    font-family: var(--main-font);
+    font-size: 16px;
+    line-height: normal;
+    overflow-clip-margin: content-box;
+    overflow-x: clip;
+    text-size-adjust: 100%;
+    width: 150px;
+    border-radius: 90%;
+    -webkit-font-smoothing: antialiased;
+
+}
+

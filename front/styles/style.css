@@ -1,18 +1,22 @@
 :root {
     --background-default: #ADD8E6; /* Основной фоновый цвет */
     --textcolor-default: rgb(29, 29, 29);
+    --main-font: 'Roboto Condensed', serif;
+    --background-souz: ;
 }
 
 html, body {
+    height: 100%;
     margin: 0;
-    background: var(--background-default);
+    padding: 0;
+    background: rgb(244,244,244);
 }
 
 .MainHeader {
     background-color: #fff;
     color: rgba(29, 29, 29, 0.7);
     display: block;
-    font-family: 'Roboto Condensed', serif;
+    font-family: var(--main-font);
     font-size: 22px;
     font-weight: 400;
     letter-spacing: normal;
@@ -20,6 +24,7 @@ html, body {
     text-size-adjust: 100%;
     text-transform: none;
     -webkit-font-smoothing: subpixel-antialiased;
+
 }
 
 .Header-top {
@@ -30,9 +35,10 @@ html, body {
     font-family: 'Roboto Condensed', serif;
     justify-content: center;
     letter-spacing: normal;
-    line-height: 37.4px;
+    line-height: 37px;
     padding: 38px 118px;
     text-align: center;
+
 }
 
 [data-nc-container="top-left"],
@@ -94,10 +100,12 @@ html, body {
     position: relative;
     text-align: left;
     text-transform: uppercase;
+    text-decoration: none; /* Убираем подчеркивание текста */
     transition: color 0.17s, background-color 0.17s;
     vertical-align: middle;
     white-space-collapse: collapse;
 }
+
 
 .Header-nav-folder {
     background-color: var(--textcolor-default);
@@ -124,9 +132,10 @@ html, body {
 .Header-nav-folder-title {
     text-decoration: none;
     color: var(--textcolor-default);
+    cursor: pointer;
 }
 
-.Header-nav-folder-title:hover {
+.Header-nav-folder-title:hover, .Header-nav-folder-item:hover {
     color: grey;
 }
 
@@ -136,4 +145,27 @@ html, body {
     -ms-transform: translate3d(0,0,0);
     transform: translate3d(0,0,0);
     transition: left 0s linear, transform 0.2s ease-out, opacity 0.2s ease-out;
+}
+
+.middleContainer {
+    background-color: var(--background-default);
+    background-attachment: scroll;
+    background-clip: border-box;
+    background-image: none;
+    background-origin: padding-box;
+    background-repeat-x: repeat;
+    background-repeat-y: repeat;
+    background-size: auto;
+    display: flex;
+    flex-basis: auto;
+    flex-grow: 1;
+    flex-shrink: 0;
+    font-family: var(--main-font);
+    font-size: 16px;
+    line-height: normal;
+    margin-right: 156px;
+    margin-left: 156px;
+    min-width: 960px;
+    min-height: 100%;
+    -webkit-font-smoothing: antialiased;
 }
