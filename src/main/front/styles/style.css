@@ -1,47 +1,28 @@
 :root {
     --background-default: #ADD8E6; /* Основной фоновый цвет */
-    --textcolor-default:rgb(29, 29, 29);
+    --textcolor-default: rgb(29, 29, 29);
 }
-
-
 
 html, body {
     margin: 0;
     background: var(--background-default);
 }
 
-
-.MainHeader
-{
-    background-attachment: scroll;
-    background-clip: border-box;
-    background-color: rgb(255, 255, 255);
-    background-image: none;
-    background-origin: padding-box;
-    background-position-x: 0;
-    background-position-y: 0;
-    background-repeat-x: repeat;
-    background-repeat-y: repeat;
-    background-size: auto;
+.MainHeader {
+    background-color: #fff;
     color: rgba(29, 29, 29, 0.7);
     display: block;
     font-family: 'Roboto Condensed', serif;
     font-size: 22px;
-    font-style: normal;
     font-weight: 400;
-
     letter-spacing: normal;
     line-height: 37.4px;
-    pointer-events: auto;
     text-size-adjust: 100%;
     text-transform: none;
-
     -webkit-font-smoothing: subpixel-antialiased;
-
 }
 
-.Header-top
-{
+.Header-top {
     align-items: center;
     box-sizing: border-box;
     color: rgba(29, 29, 29, 0.7);
@@ -51,99 +32,56 @@ html, body {
     letter-spacing: normal;
     line-height: 37.4px;
     padding: 38px 118px;
-    pointer-events: auto;
     text-align: center;
-
-
-    -webkit-box-align: center;
-    -webkit-box-pack: center;
-
 }
 
-[data-nc-container="top-left"]
-{
-
+[data-nc-container="top-left"],
+[data-nc-container="top-right"] {
     flex-basis: auto;
     flex-grow: 1;
     flex-shrink: 1;
     justify-content: flex-start;
     max-width: 100%;
-    min-width: 0px;
+    min-width: 0;
     opacity: 1;
     text-align: left;
-    transition-behavior: normal;
-    transition-delay: 0.6s;
-    transition-duration: 0.2s;
-    transition-property: opacity;
-    transition-timing-function: ease-out;
-    -webkit-box-align: center;
-    -webkit-box-flex: 1;
-    -webkit-box-pack: start;
-
-
+    transition: opacity 0.2s ease-out 0.6s;
 }
 
-[data-nc-container="top-right"]
-{
-    display: flex;
+[data-nc-container="top-right"] {
     align-items: center;
-    flex-basis: auto;
-    flex-grow: 1;
-    flex-shrink: 1;
     text-align: right;
-    letter-spacing: 5148px;
-    opacity: 1;
-    transition-behavior: normal;
-    transition-delay: 0.6s;
-    transition-duration: 0.2s;
-    transition-property: opacity;
-    transition-timing-function: ease-out;
-    -webkit-box-align: center;
-    -webkit-box-flex: 1;
-    -webkit-box-pack: end;
     justify-content: flex-end;
-    max-width: 100%;
-    min-width: 0;
-
-
-
 }
 
 .Header-nav {
-
     display: block;
     flex-basis: auto;
     flex-grow: 0;
-    flex-shrink: 0;  /* когда масштабируешь, они друг на друга*/
+    flex-shrink: 0;
     font-size: 15px;
     letter-spacing: 2px;
     line-height: 15px;
     text-align: right;
     padding: 1px 24px;
     text-transform: uppercase;
-
 }
 
 .Header-nav-item {
-    color: rgb(29, 29, 29);
+    color: var(--textcolor-default);
     display: inline-block;
     letter-spacing: 2.1px;
-    margin: 0px 13.95px;
-    padding: 9.27px 0px;
+    margin: 0 13.95px;
+    padding: 9.27px 0;
     font-weight: 500;
-    text-align: left; /* Изменено на центральное выравнивание текста */
+    text-align: left;
     text-transform: uppercase;
-    transition-behavior: normal;
-    transition-delay: 0s;
-    transition-duration: 0.17s;
-    position: relative; /* Добавлено */
-    white-space: nowrap; /* Отключение переноса текста */
+    transition: color 0.17s;
+    position: relative;
+    white-space: nowrap;
 }
 
-
-
-.Header-nav-folder-item
-{
+.Header-nav-folder-item {
     color: white;
     display: block;
     font-size: 15px;
@@ -156,14 +94,9 @@ html, body {
     position: relative;
     text-align: left;
     text-transform: uppercase;
-
-    transition-property: color, background-color;
-    transition-duration: 0.17s;
-    transition-timing-function: ease-in-out;
-    transition-delay: 0s;
+    transition: color 0.17s, background-color 0.17s;
     vertical-align: middle;
     white-space-collapse: collapse;
-
 }
 
 .Header-nav-folder {
@@ -182,33 +115,25 @@ html, body {
     text-align: left;
     text-transform: uppercase;
     top: 34px;
-    transition-property: left, transform, opacity;
-    transition-duration: 0s, 0s, 0.2s;
-    transition-timing-function: linear, linear, ease-out;
+    transition: left 0s linear, transform 0.2s ease-out, opacity 0.2s ease-out;
     white-space-collapse: collapse;
     -webkit-font-smoothing: antialiased;
     border-radius: 16px;
 }
 
-
-
-
-.Header-nav-folder-title
-{
+.Header-nav-folder-title {
     text-decoration: none;
-    color:var(--textcolor-default);
+    color: var(--textcolor-default);
 }
 
-
-.Header-nav-folder-title:hover
-{
-    color:grey;
+.Header-nav-folder-title:hover {
+    color: grey;
 }
+
 .Header-nav-item--folder:hover .Header-nav-folder {
     left: 0;
     opacity: 1;
     -ms-transform: translate3d(0,0,0);
     transform: translate3d(0,0,0);
-
-    transition: left 0s linear,transform .2s ease-out,opacity .2s ease-out
+    transition: left 0s linear, transform 0.2s ease-out, opacity 0.2s ease-out;
 }
