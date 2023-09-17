@@ -1,51 +1,63 @@
-
-.top_menu
-{
+.info-menu {
     display: flex;
     font-family: var(--main-font);
     font-size: 16px;
-
-    justify-content: space-between;
-    line-height: normal;
-    margin: 50px 600px 40px 25px;
-    padding: 20px 20px;
-
-    -webkit-font-smoothing: antialiased;
-
-
-
-
+    width: 55%;
+    margin: 50px 0 25px;
 }
-.souz_text-1
-{
-    margin-right: 25px;
-    display: block;
-    font-family: var(--main-font);
-    font-size: 16px;
-    line-height: normal;
 
-    text-size-adjust: 100%;
-    -webkit-font-smoothing: antialiased;
+.text {
 
 }
 
-.souz_logo
-{
-
-    border-bottom-style: none;
-    border-left-style: none;
-    border-right-style: none;
-    border-top-style: none;
-    display: block;
-    font-family: var(--main-font);
-    font-size: 16px;
-    line-height: normal;
-    overflow-clip-margin: content-box;
-    overflow-x: clip;
-    text-size-adjust: 100%;
-    width: 200px;
+.logo {
     border-radius: 90%;
-    -webkit-font-smoothing: antialiased;
+    border: none;
+}
 
+
+.main-container {
+    display: flex;
+
+    flex-wrap: wrap;
+}
+
+.container_item {
+    border-radius: 16px;
+    box-sizing: border-box;
+    padding: 24px 20px;
+    position: relative;
+    transition-duration: 0.15s;
+    transition-property: background-color;
+    transition-timing-function: ease-out;
+    border: 1px solid grey;
+    margin-top: 50px;
+    height: 200px;
+}
+
+
+.character_container {
+    max-width: 40%;
+    width: 100%;
+    display: flex;
+}
+
+.character_photo {
+    align-self: flex-start;
+    display: flex;
+    max-width: 25%;
+    height: 100%;
+}
+
+@media (max-width: 768px) {
+    .character_container {
+        max-width: 100%;
+    }
+}
+
+.character_text {
+    font-family: var(--main-font);
+    font-size: 16px;
+    margin-left: 45px;
 }
 
