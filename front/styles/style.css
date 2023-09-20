@@ -17,7 +17,8 @@ html, body {
     font-family: var(--main-font);
     font-size: 22px;
     font-weight: 400;
-    line-height: 37.4px;
+    line-height: 37px;
+    width: 100%;
 }
 
 .Header-top {
@@ -67,7 +68,7 @@ html, body {
     display: inline-block;
     letter-spacing: 2.1px;
     margin: 0 13.95px;
-    padding: 9.27px 0;
+    padding: 9px 0;
     font-weight: 500;
     text-align: left;
     text-transform: uppercase;
@@ -130,8 +131,8 @@ html, body {
 .Header-nav-item--folder:hover .Header-nav-folder {
     left: 0;
     opacity: 1;
-    -ms-transform: translate3d(0,0,0);
-    transform: translate3d(0,0,0);
+    -ms-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
     transition: left 0s linear, transform 0.2s ease-out, opacity 0.2s ease-out;
 }
 
