@@ -50,13 +50,13 @@ public class JwtUtils {
       Jwts.parserBuilder().setSigningKey(key()).build().parse(authToken);
       return true;
     } catch (MalformedJwtException e) {
-      logger.error("Invalid JWT token: {}", e.getMessage());
+      logger.error("Недопустимый токен JWT: {}", e.getMessage());
     } catch (ExpiredJwtException e) {
-      logger.error("JWT token is expired: {}", e.getMessage());
+      logger.error("Срок действия токена JWT истек: {}", e.getMessage());
     } catch (UnsupportedJwtException e) {
-      logger.error("JWT token is unsupported: {}", e.getMessage());
+      logger.error("JWT токен не поддерживается: {}", e.getMessage());
     } catch (IllegalArgumentException e) {
-      logger.error("JWT claims string is empty: {}", e.getMessage());
+      logger.error("JWT утверждает, что строка пуста: {}", e.getMessage());
     }
 
     return false;
