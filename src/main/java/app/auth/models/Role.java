@@ -1,4 +1,4 @@
-package app.models;
+package app.auth.models;
 
 import jakarta.persistence.*;
 

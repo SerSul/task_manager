@@ -1,9 +1,9 @@
-package app.security.jwt;
+package app.auth.security.jwt;
 
 import java.security.Key;
 import java.util.Date;
 
-import app.security.services.UserDetailsImpl;
+import app.auth.security.services.UserDetailsImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;

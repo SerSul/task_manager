@@ -1,26 +1,29 @@
-package app.controllers;
+package app.auth.controllers;
 
-import app.models.ERole;
-import app.models.Role;
-import app.payload.request.DeleteRequest;
+import app.auth.payload.request.DeleteRequest;
+import app.auth.repository.UserRepository;
+import app.auth.models.ERole;
+import app.auth.models.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
-import app.models.User;
+import app.auth.models.User;
 
-import app.repository.UserRepository;
+import java.util.ArrayList;
+import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/admin")
+@PreAuthorize("hasRole('ADMIN')")
 public class AdminController {
 
     @Autowired
     private UserRepository userRepository;
+    @CrossOrigin(origins = "*")
     @PostMapping("/deleteuser")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteuser(@Valid @RequestBody DeleteRequest deleteRequest) {
         Long id = deleteRequest.getId();
 
@@ -37,6 +40,19 @@ public class AdminController {
         userRepository.delete(user);
 
         return ResponseEntity.ok("Пользователь успешно удален");
+    }
+    @CrossOrigin(origins = "*")
+    @GetMapping( "/getallusers")
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> users = userRepository.findAll();
+
+        List<User> filteredUsers = new ArrayList<>();
+        for (User user : users) {
+            User filteredUser = new User(user.getId(), user.getEmail(), user.getUsername(), user.getRoles());
+            filteredUsers.add(filteredUser);
+        }
+
+        return ResponseEntity.ok(filteredUsers);
     }
 
 

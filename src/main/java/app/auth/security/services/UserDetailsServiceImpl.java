@@ -1,6 +1,6 @@
-package app.security.services;
+package app.auth.security.services;
 
-import app.repository.UserRepository;
+import app.auth.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import app.models.User;
+import app.auth.models.User;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -19,7 +19,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
   @Transactional
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     User user = userRepository.findByUsername(username)
-        .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
+        .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден: " + username));
 
     return UserDetailsImpl.build(user);
   }

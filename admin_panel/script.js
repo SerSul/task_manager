@@ -1,76 +1,38 @@
-let accessToken;
+const accessToken = localStorage.getItem('accessToken');
+document.addEventListener('DOMContentLoaded', function () {
 
-document.getElementById('loginForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-
-    const data = {
-        username: username,
-        password: password
-    };
-
-    fetch('http://localhost:8080/api/auth/signin', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    })
-        .then(response => response.json())
-        .then(data => {
-            const responseDiv = document.getElementById('response');
-            responseDiv.innerHTML = JSON.stringify(data, null, 2);
-
-            if (data.accessToken) {
-
-                const accessToken = data.accessToken;
-
-                localStorage.setItem('accessToken', accessToken);
-
-                // Перенаправляем пользователя на index.html
-                window.location.href = 'index.html';
+    function loadUsers() {
+        fetch('http://localhost:8080/api/admin/getallusers', {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + accessToken, // Замените yourAccessToken на актуальный токен
+                'Content-Type': 'application/json'
             }
         })
-        .catch(error => {
-            console.error('Ошибка:', error);
-        });
+            .then(response => response.json())
+            .then(data => {
+                const userList = document.getElementById('user-list');
+                userList.innerHTML = ''; // Очистить текущий список пользователей
+
+                data.forEach(user => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${user.id}</td>
+                        <td>${user.username}</td>
+                        <td>${user.email}</td>
+                        <td>Действия</td>
+                    `;
+
+                    userList.appendChild(row);
+                });
+            })
+            .catch(error => {
+                console.error('Ошибка при загрузке пользователей:', error);
+            });
+    }
+
+    // Вызываем функцию loadUsers при загрузке страницы
+    loadUsers();
 });
 
-
-
-
-
-
-
-
-
-
-
-const userList = document.getElementById("user-list");
-
-function displayUsers() {
-    userList.innerHTML = "";
-    users.forEach(user => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-            <td>${user.name}</td>
-            <td>${user.email}</td>
-            <td><button onclick="deleteUser(${user.id})">Удалить</button></td>
-        `;
-        userList.appendChild(row);
-    });
-}
-
-
-function deleteUser(userId) {
-    const index = users.findIndex(user => user.id === userId);
-    if (index !== -1) {
-        users.splice(index, 1);
-        displayUsers();
-    }
-}
-
-// Инициализация при загрузке страницы
-displayUsers();
+console.log(accessToken);

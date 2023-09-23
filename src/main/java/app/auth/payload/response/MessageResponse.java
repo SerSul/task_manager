@@ -1,4 +1,4 @@
-package app.payload.response;
+package app.auth.payload.response;
 
 public class MessageResponse {
   private String message;

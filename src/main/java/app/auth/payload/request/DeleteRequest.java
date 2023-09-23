@@ -1,4 +1,4 @@
-package app.payload.request;
+package app.auth.payload.request;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;

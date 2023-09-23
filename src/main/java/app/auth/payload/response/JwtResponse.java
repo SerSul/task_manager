@@ -1,4 +1,4 @@
-package app.payload.response;
+package app.auth.payload.response;
 
 import java.util.List;
 

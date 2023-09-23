@@ -1,8 +1,5 @@
-package app.controllers;
+package app.auth.controllers;
 
-import app.payload.request.LoginRequest;
-import jakarta.validation.Valid;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +17,4 @@ public class TestController {
     public String userAccess() {
         return "User Content.";
     }
-
-
 }

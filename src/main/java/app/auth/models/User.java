@@ -1,8 +1,9 @@
-package app.models;
+package app.auth.models;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -45,6 +46,16 @@ public class User {
     this.username = username;
     this.email = email;
     this.password = password;
+  }
+
+
+  public User(Long id, String email, String username, Set<Role> roles)
+  {
+    this.username = username;
+    this.email = email;
+    this.id=id;
+    this.roles=roles;
+    this.password="";
   }
 
   public Long getId() {

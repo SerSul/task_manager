@@ -1,8 +1,8 @@
-package app.security.jwt;
+package app.auth.security.jwt;
 
 import java.io.IOException;
 
-import app.security.services.UserDetailsServiceImpl;
+import app.auth.security.services.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
