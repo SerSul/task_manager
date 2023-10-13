@@ -29,8 +29,9 @@ public class TaskService {
         return taskRepository.findAll();
     }
 
-    public void updateTask(Task task) {
+    public Task updateTask(Task task) {
         taskRepository.save(task);
+        return task;
     }
 
     public void deleteTask(Long id) {

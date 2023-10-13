@@ -54,6 +54,14 @@ public class AdminController {
 
         return ResponseEntity.ok(filteredUsers);
     }
+    @CrossOrigin(origins = "*")
+    @GetMapping( "/test")
+
+    public ResponseEntity<?> test()
+    {
+        return ResponseEntity.ok("done");
+    }
+
 
 
 }
