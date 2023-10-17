@@ -16,10 +16,16 @@ public class allTest {
     }
 
     @GetMapping("/testUser")
-
     @PreAuthorize("hasRole('User')")
     public ResponseEntity<?> testUser()
     {
         return ResponseEntity.ok("User auth");
+    }
+
+    @GetMapping("/testAdmin")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> testAdmin()
+    {
+        return ResponseEntity.ok("Admin auth");
     }
 }

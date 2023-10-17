@@ -22,7 +22,7 @@ public class Task {
     private String description;
 
     @Column(name = "user_id")
-    private Long userId;
+    private Long user_id;
 
     @Enumerated(EnumType.STRING)
     @NotNull

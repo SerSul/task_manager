@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -51,7 +51,7 @@ public class TaskController {
         Task task = new Task();
         task.setHeader(addTaskRequest.getHeader());
         task.setDescription(addTaskRequest.getDescription());
-        task.setUserId(jwtUtils.getUserIdFromJwtToken(jwtToken));
+        task.setUser_id(jwtUtils.getUserIdFromJwtToken(jwtToken));
         task.setPriority(addTaskRequest.getPriority());
         Task createdTask = taskService.createTask(task);
 
@@ -105,7 +105,7 @@ public class TaskController {
             if (taskToUpdate != null) {
                 taskToUpdate.setHeader(updateTaskRequest.getHeader());
                 taskToUpdate.setDescription(updateTaskRequest.getDescription());
-                taskToUpdate.setUserId(jwtUtils.getUserIdFromJwtToken(jwtToken));
+                taskToUpdate.setUser_id(jwtUtils.getUserIdFromJwtToken(jwtToken));
 
                 if (updateTaskRequest.getPriority() != null) {
                     taskToUpdate.setPriority(updateTaskRequest.getPriority());
@@ -119,4 +119,21 @@ public class TaskController {
             return ResponseEntity.badRequest().body("У вас нет прав на обновление этой задачи");
         }
     }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("/getTasks")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public ResponseEntity<?> getTasks(
+            @RequestHeader(value = "Authorization") String authorizationHeader)
+    {
+        if (!(authorizationHeader != null && authorizationHeader.startsWith("Bearer "))) {
+            return ResponseEntity.badRequest().body("Вы не авторизованы");
+        }
+
+        String jwtToken = authorizationHeader.replace("Bearer ", "");
+        Long userIdFromToken = jwtUtils.getUserIdFromJwtToken(jwtToken);
+
+        return ResponseEntity.ok(taskService.getallTasks(userIdFromToken));
+    }
+
 }

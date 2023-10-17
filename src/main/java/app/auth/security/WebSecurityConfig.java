@@ -17,7 +17,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -57,16 +59,21 @@ public class WebSecurityConfig {
   }
 
   @Bean
+  public AuthenticationEntryPoint authenticationEntryPoint() {
+    return new LoginUrlAuthenticationEntryPoint("http://127.0.0.1:5500/login.html");
+  }
+
+  @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.csrf(csrf -> csrf.disable())
-        .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
-        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .authorizeHttpRequests(auth ->
-          auth.requestMatchers("/api/auth/**").permitAll()
-              .requestMatchers("/api/test/**").permitAll()
-                  .requestMatchers("/api/**").permitAll()
-                  .requestMatchers("/**").permitAll()
-        );
+            .exceptionHandling(exception -> exception.authenticationEntryPoint(authenticationEntryPoint()))
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(auth ->
+                    auth.requestMatchers("/api/auth/**").permitAll()
+                            .requestMatchers("/api/test/**").permitAll()
+                            .requestMatchers("/api/**").permitAll()
+                            .requestMatchers("/**").permitAll()
+            );
 
     http.authenticationProvider(authenticationProvider());
 

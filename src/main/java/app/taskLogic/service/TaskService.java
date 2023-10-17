@@ -25,8 +25,9 @@ public class TaskService {
         return taskRepository.findById(id);
     }
 
-    public List<Task> getAllTasks() {
-        return taskRepository.findAll();
+    public List<Task> getallTasks(Long userId)
+    {
+        return taskRepository.findTasksByUserId(userId);
     }
 
     public Task updateTask(Task task) {
