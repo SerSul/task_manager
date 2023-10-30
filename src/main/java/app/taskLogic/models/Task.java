@@ -29,4 +29,8 @@ public class Task {
     private TaskPriority priority;
 
 
+    @ManyToOne
+    @JoinColumn(name = "project_id")
+    private Project project;
+
 }
