@@ -23,17 +23,15 @@ public class ProjectService {
         return projectRepository.save(project);
     }
 
-    // Метод для получения всех проектов
     public List<Project> getAllProjects() {
         return projectRepository.findAll();
     }
 
-    // Метод для получения проекта по его идентификатору
+
     public Optional<Project> getProjectById(Long projectId) {
         return projectRepository.findById(projectId);
     }
 
-    // Метод для обновления данных проекта
     public Project updateProject(Long projectId, String newProjectName) {
         Optional<Project> optionalProject = projectRepository.findById(projectId);
         if (optionalProject.isPresent()) {

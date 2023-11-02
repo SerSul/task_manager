@@ -1,5 +1,6 @@
 package app.taskLogic.request;
 
+import app.taskLogic.models.Project;
 import app.taskLogic.models.TaskPriority;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -21,7 +22,6 @@ public class AddTaskRequest {
     @NotBlank
     TaskPriority priority;
 
-
-
+    Long projectId;
 
 }

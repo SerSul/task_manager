@@ -1,9 +1,11 @@
 package app.taskLogic;
 
 import app.auth.payload.response.MessageResponse;
+import app.taskLogic.models.Project;
 import app.taskLogic.models.Task;
 import app.taskLogic.request.AddTaskRequest;
 import app.taskLogic.request.UpdateTaskRequest;
+import app.taskLogic.service.ProjectService;
 import app.taskLogic.service.TaskService;
 import app.auth.security.jwt.JwtUtils;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -30,20 +32,20 @@ import java.util.Objects;
 @RestController
 @RequestMapping("/tasks")
 @SecurityRequirement(name = "JWT")
+@PreAuthorize("isAuthenticated()")
 public class TaskController {
 
     @Autowired
     private TaskService taskService;
 
     @Autowired
+    private ProjectService projectService;
+
+    @Autowired
     private JwtUtils jwtUtils;
 
     private ResponseEntity<?> createResponseEntity(Object body, HttpStatus status) {
         return new ResponseEntity<>(body, status);
-    }
-
-    private ResponseEntity<?> unauthorizedResponse() {
-        return createResponseEntity("Вы не авторизованы", HttpStatus.UNAUTHORIZED);
     }
 
     private ResponseEntity<?> badRequestResponse(Object body) {
@@ -65,13 +67,10 @@ public class TaskController {
 
     @CrossOrigin(origins = "*")
     @PostMapping("/createTask")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> createTask(
             @Valid @RequestBody AddTaskRequest addTaskRequest,
             @RequestHeader(value = "Authorization") String authorizationHeader) {
         Long userId = getUserIdFromToken(authorizationHeader);
-
-
 
         Task task = new Task();
         task.setHeader(addTaskRequest.getHeader());
@@ -79,13 +78,18 @@ public class TaskController {
         task.setUser_id(userId);
         task.setPriority(addTaskRequest.getPriority());
 
+        Long projectId = addTaskRequest.getProjectId();
+        if (projectId!=null) {
+            Project project = projectService.getProjectById(projectId).orElse(null);
+            task.setProject(project);
+        }
         Task createdTask = taskService.createTask(task);
         return okResponse(createdTask);
     }
 
+
     @CrossOrigin(origins = "*")
     @DeleteMapping("/deleteTask/{taskId}")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> deleteTask(
             @PathVariable Long taskId,
             @RequestHeader(value = "Authorization") String authorizationHeader) {
@@ -105,20 +109,17 @@ public class TaskController {
 
     @CrossOrigin(origins = "*")
     @PostMapping("/updateTask/{taskId}")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> updateTask(
             @PathVariable Long taskId,
             @Valid @RequestBody UpdateTaskRequest updateTaskRequest,
             @RequestHeader(value = "Authorization") String authorizationHeader) {
 
         Long userId = getUserIdFromToken(authorizationHeader);
-
-
         Long userIdByTaskId = taskService.getUserIdByTaskId(taskId);
 
         if (Objects.equals(userId, userIdByTaskId)) {
             Task taskToUpdate = taskService.getTaskById(taskId).orElse(null);
-
+            Long projectId = updateTaskRequest.getProjectId();
             if (taskToUpdate != null) {
                 taskToUpdate.setHeader(updateTaskRequest.getHeader());
                 taskToUpdate.setDescription(updateTaskRequest.getDescription());
@@ -126,6 +127,10 @@ public class TaskController {
 
                 if (updateTaskRequest.getPriority() != null) {
                     taskToUpdate.setPriority(updateTaskRequest.getPriority());
+                }
+                if (projectId!=null) {
+                    Project project = projectService.getProjectById(projectId).orElse(null);
+                    taskToUpdate.setProject(project);
                 }
                 Task updatedTask = taskService.updateTask(taskToUpdate);
                 return okResponse(updatedTask);
@@ -139,7 +144,6 @@ public class TaskController {
 
     @CrossOrigin(origins = "*")
     @GetMapping("/getTasks")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> getTasks(
             @RequestHeader(value = "Authorization") String authorizationHeader) {
 

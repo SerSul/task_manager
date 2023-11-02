@@ -2,7 +2,7 @@ package app.taskLogic.request;
 
 import jakarta.validation.constraints.NotBlank;
 
-public class CreateProjectRequest {
+public class UpdateProjectRequest {
 
     @NotBlank
     private String name;
