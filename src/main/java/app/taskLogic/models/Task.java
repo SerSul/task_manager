@@ -1,13 +1,9 @@
 package app.taskLogic.models;
 
-import app.auth.models.User;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import javax.management.ConstructorParameters;
-import java.time.LocalDate;
 
 @Data
 @Entity
@@ -29,7 +25,6 @@ public class Task {
     private TaskPriority priority;
 
     @ManyToOne
-    @JoinColumn(name = "project_id")
+    @JoinColumn(name = "project_id", nullable = true)
     private Project project;
-
 }
