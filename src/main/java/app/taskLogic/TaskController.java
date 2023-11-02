@@ -6,6 +6,7 @@ import app.taskLogic.request.AddTaskRequest;
 import app.taskLogic.request.UpdateTaskRequest;
 import app.taskLogic.service.TaskService;
 import app.auth.security.jwt.JwtUtils;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,7 @@ import java.util.Objects;
  * */
 @RestController
 @RequestMapping("/tasks")
+@SecurityRequirement(name = "JWT")
 public class TaskController {
 
     @Autowired
@@ -67,12 +69,9 @@ public class TaskController {
     public ResponseEntity<?> createTask(
             @Valid @RequestBody AddTaskRequest addTaskRequest,
             @RequestHeader(value = "Authorization") String authorizationHeader) {
-
         Long userId = getUserIdFromToken(authorizationHeader);
 
-        if (userId == null) {
-            return unauthorizedResponse();
-        }
+
 
         Task task = new Task();
         task.setHeader(addTaskRequest.getHeader());
@@ -93,9 +92,6 @@ public class TaskController {
 
         Long userId = getUserIdFromToken(authorizationHeader);
 
-        if (userId == null) {
-            return unauthorizedResponse();
-        }
 
         Long userIdByTaskId = taskService.getUserIdByTaskId(taskId);
 
@@ -117,9 +113,6 @@ public class TaskController {
 
         Long userId = getUserIdFromToken(authorizationHeader);
 
-        if (userId == null) {
-            return unauthorizedResponse();
-        }
 
         Long userIdByTaskId = taskService.getUserIdByTaskId(taskId);
 
@@ -152,9 +145,6 @@ public class TaskController {
 
         Long userId = getUserIdFromToken(authorizationHeader);
 
-        if (userId == null) {
-            return unauthorizedResponse();
-        }
 
         List<Task> userTasks = taskService.getallTasks(userId);
         return okResponse(userTasks);
