@@ -1,16 +1,14 @@
 package app.taskLogic;
 
-
-
-
 import app.auth.security.jwt.JwtUtils;
 import app.taskLogic.models.Project;
 import app.taskLogic.models.Task;
 import app.taskLogic.request.CreateProjectRequest;
-import app.taskLogic.service.ProjectService;
+
+import app.taskLogic.service.ProjectServise;
 import app.taskLogic.service.TaskService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,12 +20,11 @@ import java.util.List;
 
 @RestController
 @SecurityRequirement(name = "JWT")
-@RequestMapping("/projects")
-@PreAuthorize("hasRole('ROLE_ADMIN')")
-@CrossOrigin(origins = "*")
+@RequestMapping("/api/projects")
+@PreAuthorize("isAuthenticated()")
 public class ProjectController {
     @Autowired
-    private ProjectService projectService;
+    private ProjectServise projectService;
 
     @Autowired
     TaskService taskService;

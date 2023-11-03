@@ -1,36 +1,32 @@
 package app.taskLogic;
 
 import app.auth.payload.response.MessageResponse;
+
 import app.taskLogic.models.Project;
 import app.taskLogic.models.Task;
 import app.taskLogic.request.AddTaskRequest;
 import app.taskLogic.request.UpdateTaskRequest;
-import app.taskLogic.service.ProjectService;
+
+import app.taskLogic.service.ProjectServise;
 import app.taskLogic.service.TaskService;
 import app.auth.security.jwt.JwtUtils;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
-
-/*
- *{
-    "header": "String",
-    "description": "String",
-    "priority": "String",
-    "deadline":"String" Format: dd.mm.yyyy
-
-}
- * */
 @RestController
-@RequestMapping("/tasks")
+@RequestMapping("/api/tasks")
 @SecurityRequirement(name = "JWT")
 @PreAuthorize("isAuthenticated()")
 public class TaskController {
@@ -39,23 +35,29 @@ public class TaskController {
     private TaskService taskService;
 
     @Autowired
-    private ProjectService projectService;
-
+    ProjectServise projectService;
     @Autowired
     private JwtUtils jwtUtils;
 
-    private ResponseEntity<?> createResponseEntity(Object body, HttpStatus status) {
-        return new ResponseEntity<>(body, status);
+    // Метод для создания ResponseEntity с указанным телом, статусом и сообщением статуса
+    private ResponseEntity<?> createJsonResponse(Object body, HttpStatus status) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", status.value());
+        response.put("data", body);
+        return new ResponseEntity<>(response, status);
     }
 
-    private ResponseEntity<?> badRequestResponse(Object body) {
-        return createResponseEntity(body, HttpStatus.BAD_REQUEST);
+    // Метод для возврата ResponseEntity с кодом ошибки 400 (BAD_REQUEST)
+    private ResponseEntity<?> badRequestJsonResponse(Object body) {
+        return createJsonResponse(body, HttpStatus.BAD_REQUEST);
     }
 
-    private ResponseEntity<?> okResponse(Object body) {
-        return createResponseEntity(body, HttpStatus.OK);
+    // Метод для возврата ResponseEntity с кодом успешного выполнения (200 OK)
+    private ResponseEntity<?> okJsonResponse(Object body) {
+        return createJsonResponse(body, HttpStatus.OK);
     }
 
+    // Метод для извлечения идентификатора пользователя из JWT-токена
     private Long getUserIdFromToken(String authorizationHeader) {
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             String jwtToken = authorizationHeader.replace("Bearer ", "");
@@ -64,8 +66,7 @@ public class TaskController {
         return null;
     }
 
-
-    @CrossOrigin(origins = "*")
+    // Метод для обработки POST-запроса и создания задачи
     @PostMapping("/createTask")
     public ResponseEntity<?> createTask(
             @Valid @RequestBody AddTaskRequest addTaskRequest,
@@ -75,7 +76,7 @@ public class TaskController {
         Task task = new Task();
         task.setHeader(addTaskRequest.getHeader());
         task.setDescription(addTaskRequest.getDescription());
-        task.setUser_id(userId);
+        task.setUserId(userId);
         task.setPriority(addTaskRequest.getPriority());
 
         Long projectId = addTaskRequest.getProjectId();
@@ -84,73 +85,72 @@ public class TaskController {
             task.setProject(project);
         }
         Task createdTask = taskService.createTask(task);
-        return okResponse(createdTask);
+        return okJsonResponse(createdTask);
     }
 
-
-    @CrossOrigin(origins = "*")
+    // Метод для обработки DELETE-запроса и удаления задачи по идентификатору
     @DeleteMapping("/deleteTask/{taskId}")
     public ResponseEntity<?> deleteTask(
             @PathVariable Long taskId,
             @RequestHeader(value = "Authorization") String authorizationHeader) {
-
         Long userId = getUserIdFromToken(authorizationHeader);
-
 
         Long userIdByTaskId = taskService.getUserIdByTaskId(taskId);
 
         if (Objects.equals(userId, userIdByTaskId)) {
             taskService.deleteTask(taskId);
-            return okResponse("Задача успешно удалена");
+            return okJsonResponse("Задача успешно удалена");
         } else {
-            return badRequestResponse(new MessageResponse("Задача не найдена"));
+            return badRequestJsonResponse(new MessageResponse("Задача не найдена"));
         }
     }
 
-    @CrossOrigin(origins = "*")
+    // Метод для обработки POST-запроса и обновления задачи по идентификатору
     @PostMapping("/updateTask/{taskId}")
     public ResponseEntity<?> updateTask(
             @PathVariable Long taskId,
             @Valid @RequestBody UpdateTaskRequest updateTaskRequest,
             @RequestHeader(value = "Authorization") String authorizationHeader) {
-
         Long userId = getUserIdFromToken(authorizationHeader);
         Long userIdByTaskId = taskService.getUserIdByTaskId(taskId);
 
         if (Objects.equals(userId, userIdByTaskId)) {
             Task taskToUpdate = taskService.getTaskById(taskId).orElse(null);
-            Long projectId = updateTaskRequest.getProjectId();
-            if (taskToUpdate != null) {
-                taskToUpdate.setHeader(updateTaskRequest.getHeader());
-                taskToUpdate.setDescription(updateTaskRequest.getDescription());
-                taskToUpdate.setUser_id(userId);
 
+            if (taskToUpdate != null) {
+                if (updateTaskRequest.getHeader() != null) {
+                    taskToUpdate.setHeader(updateTaskRequest.getHeader());
+                }
+                if (updateTaskRequest.getDescription() != null) {
+                    taskToUpdate.setDescription(updateTaskRequest.getDescription());
+                }
                 if (updateTaskRequest.getPriority() != null) {
                     taskToUpdate.setPriority(updateTaskRequest.getPriority());
                 }
-                if (projectId!=null) {
+                if (updateTaskRequest.getProjectId() != null) {
+                    Long projectId = updateTaskRequest.getProjectId();
                     Project project = projectService.getProjectById(projectId).orElse(null);
                     taskToUpdate.setProject(project);
                 }
+
                 Task updatedTask = taskService.updateTask(taskToUpdate);
-                return okResponse(updatedTask);
+                return okJsonResponse(updatedTask);
             } else {
-                return badRequestResponse("Задача не найдена");
+                return badRequestJsonResponse("Задача не найдена");
             }
         } else {
-            return badRequestResponse("У вас нет прав на обновление этой задачи");
+            return badRequestJsonResponse("У вас нет прав на обновление этой задачи");
         }
     }
 
-    @CrossOrigin(origins = "*")
+
+    // Метод для обработки GET-запроса и получения списка задач
     @GetMapping("/getTasks")
     public ResponseEntity<?> getTasks(
             @RequestHeader(value = "Authorization") String authorizationHeader) {
-
         Long userId = getUserIdFromToken(authorizationHeader);
 
-
-        List<Task> userTasks = taskService.getallTasks(userId);
-        return okResponse(userTasks);
+        List<Task> userTasks = taskService.getAllTasks(userId);
+        return okJsonResponse(userTasks);
     }
 }

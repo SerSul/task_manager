@@ -1,11 +1,12 @@
 package app.taskLogic.models;
-
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.Data;
 
+import lombok.*;
 
-@Data
+import java.util.*;
 @Entity
+@Data
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,4 +14,7 @@ public class Project {
 
     private String name;
 
+    @JsonBackReference
+    @OneToMany(mappedBy = "project")
+    private List<Task> tasks;
 }

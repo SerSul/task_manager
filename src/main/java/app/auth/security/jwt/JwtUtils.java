@@ -21,15 +21,16 @@ public class JwtUtils {
   private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
   @Value("${app.app.jwtSecret}")
-  private String jwtSecret;
+  private String jwtSecret; // Секретный ключ для создания и проверки JWT-токенов
 
   @Value("${app.app.jwtExpirationMs}")
-  private int jwtExpirationMs;
+  private int jwtExpirationMs; // Время жизни JWT-токена в миллисекундах
 
+  // Метод для генерации JWT-токена на основе аутентификации пользователя
   public String generateJwtToken(Authentication authentication) {
     UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
     Map<String, Object> claims = new HashMap<>();
-    claims.put("user_id", userPrincipal.getId()); // здесь добавляю user_id
+    claims.put("user_id", userPrincipal.getId()); // добавляем идентификатор пользователя (user_id)
 
     return Jwts.builder()
             .setSubject(userPrincipal.getUsername())
@@ -40,38 +41,37 @@ public class JwtUtils {
             .compact();
   }
 
-
-
+  // Метод для получения ключа из секретного ключа в формате Base64
   private Key key() {
     return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
   }
 
+  // Метод для извлечения имени пользователя из JWT-токена
   public String getUserNameFromJwtToken(String token) {
     return Jwts.parserBuilder().setSigningKey(key()).build()
-               .parseClaimsJws(token).getBody().getSubject();
+            .parseClaimsJws(token).getBody().getSubject();
   }
 
+  // Метод для извлечения идентификатора пользователя из JWT-токена
   public Long getUserIdFromJwtToken(String token) {
     Claims claims = Jwts.parserBuilder().setSigningKey(key()).build().parseClaimsJws(token).getBody();
     return claims.get("user_id", Long.class);
   }
 
-
-
-  public boolean validateJwtToken(String authToken) {
+  // Метод для проверки действительности JWT-токена и возврата результата проверки
+  public JwtValidationResult validateJwtToken(String authToken) {
     try {
       Jwts.parserBuilder().setSigningKey(key()).build().parse(authToken);
-      return true;
+      return new JwtValidationResult(true); // Токен действителен
     } catch (MalformedJwtException e) {
-      logger.error("Недопустимый токен JWT: {}", e.getMessage());
+      return new JwtValidationResult("Invalid JWT Token");
     } catch (ExpiredJwtException e) {
-      logger.error("Срок действия токена JWT истек: {}", e.getMessage());
+      return new JwtValidationResult("Expired JWT Token");
     } catch (UnsupportedJwtException e) {
-      logger.error("JWT токен не поддерживается: {}", e.getMessage());
+      return new JwtValidationResult("Unsupported JWT Token");
     } catch (IllegalArgumentException e) {
-      logger.error("JWT утверждает, что строка пуста: {}", e.getMessage());
+      return new JwtValidationResult("Empty JWT Claim");
     }
-
-    return false;
   }
 }
+

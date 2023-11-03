@@ -4,14 +4,13 @@ import app.taskLogic.models.Task;
 import app.taskLogic.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.List;
-import java.util.Optional;
+
+import java.util.*;
 
 @Service
 public class TaskService {
 
     private final TaskRepository taskRepository;
-
 
     @Autowired
     public TaskService(TaskRepository taskRepository) {
@@ -22,15 +21,13 @@ public class TaskService {
         return taskRepository.save(task);
     }
 
-
-
     public Optional<Task> getTaskById(Long id) {
         return taskRepository.findById(id);
     }
 
-    public List<Task> getallTasks(Long userId)
+    public List<Task> getAllTasks(Long userId)
     {
-        return taskRepository.findTasksByUserId(userId);
+        return taskRepository.getTasksByUserId(userId);
     }
 
     public Task updateTask(Task task) {
@@ -45,4 +42,5 @@ public class TaskService {
     public Long getUserIdByTaskId(Long taskId) {
         return taskRepository.findUserIdByTaskId(taskId);
     }
+
 }

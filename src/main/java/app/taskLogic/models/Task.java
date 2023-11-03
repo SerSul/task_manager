@@ -1,7 +1,8 @@
 package app.taskLogic.models;
 
-
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
@@ -17,14 +18,16 @@ public class Task {
     private String header;
     private String description;
 
-    @Column(name = "user_id")
-    private Long user_id;
+    @Column(name = "userId")
+    private Long userId;
 
     @Enumerated(EnumType.STRING)
     @NotNull
     private TaskPriority priority;
 
+
+    @JsonManagedReference
     @ManyToOne
-    @JoinColumn(name = "project_id", nullable = true)
+    @JoinColumn(name = "project_id")
     private Project project;
 }

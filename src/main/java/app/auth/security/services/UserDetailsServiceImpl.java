@@ -15,13 +15,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
   @Autowired
   UserRepository userRepository;
 
+  // Переопределение метода интерфейса UserDetailsService для загрузки пользователя по имени пользователя
   @Override
   @Transactional
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    // Ищем пользователя по имени пользователя в репозитории
     User user = userRepository.findByUsername(username)
-        .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден: " + username));
+            .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден: " + username));
 
+    // Возвращаем объект UserDetails, созданный на основе найденного пользователя
     return UserDetailsImpl.build(user);
   }
-
 }
