@@ -81,7 +81,7 @@
 
 В этом разделе представлены скриншоты вашего приложения или интерфейса. Вы можете добавить скриншоты, чтобы пользователи могли увидеть, как выглядит ваше приложение в действии.
 
-![Скриншот 1](https://drive.google.com/file/d/1hI5JYlIJ-cohPpdYI8C2EZOxNzS5i_ST/view?usp=sharing)
+![Скриншот 1](https://github.com/SerSul/task_manager/blob/master/swagger.png?raw=true)
 
 
 
